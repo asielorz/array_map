@@ -994,7 +994,7 @@ void array_map<Key, T, Compare, Allocator>::change_capacity(size_t new_capacity)
 	std::destroy(values_ptr(), values_ptr() + size());
 
 	// Deallocate old array
-	allocator_traits::deallocate(get_stored_allocator(), mData, capacity());
+	allocator_traits::deallocate(get_stored_allocator(), mData, capacity_to_bytes(capacity()));
 
 	// Set new array and capacity
 	mData = new_data;
@@ -1093,7 +1093,7 @@ void array_map<Key, T, Compare, Allocator>::destroy_all_and_free() noexcept
 	if (mData)
 	{
 		destroy_all();
-		allocator_traits::deallocate(get_stored_allocator(), mData, capacity());
+		allocator_traits::deallocate(get_stored_allocator(), mData, capacity_to_bytes(capacity()));
 	}
 }
 
@@ -1111,7 +1111,7 @@ char * array_map<Key, T, Compare, Allocator>::copy_other(const array_map & other
 	catch (...)
 	{
 		// If copying fails deallocate new block of memory to avoid leaking and rethrow
-		allocator_traits::deallocate(alloc, new_data, other.size());
+		allocator_traits::deallocate(alloc, new_data, capacity_to_bytes(other.size()));
 		throw;
 	}
 
@@ -1146,7 +1146,7 @@ void array_map<Key, T, Compare, Allocator>::move_from_other_without_propagation(
 		catch (...)
 		{
 			// If copying fails deallocate new block of memory to avoid leaking and rethrow
-			allocator_traits::deallocate(get_stored_allocator(), new_data, other.size());
+			allocator_traits::deallocate(get_stored_allocator(), new_data, capacity_to_bytes(other.size()));
 			throw;
 		}
 
