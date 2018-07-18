@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+  <Type Name="::array_map&lt;*&gt;">
+		<DisplayString>{{ size={mSize} }}</DisplayString>
+		<Expand>
+      <Item Name="[capacity]" ExcludeView="simple">mCompareAndCapacity.second_element</Item>
+      <Item Name="[comparator]" ExcludeView="simple">*($T3 *)(&amp; mCompareAndCapacity)</Item>
+      <Item Name="[allocator]" ExcludeView="simple">*($T4 *)(this)</Item>
+			<CustomListItems MaxItemsPerView="5000">
+				<Variable Name="i" InitialValue="0" />
+				<Size>mSize</Size>
+				<Loop>
+					<Break Condition="i == mSize" />
+					<Item Name="[{(($T1*)mData)[i]}]">(($T2*)((($T1*)mData) + mCompareAndCapacity.second_element))[i]</Item>
+					<Exec>i++</Exec>
+				</Loop>
+			</CustomListItems>
+		</Expand>
+	</Type>
+
+</AutoVisualizer>
